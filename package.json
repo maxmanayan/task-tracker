@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/maxmanayan/task-tracker/issues"
   },
-  "homepage": "https://github.com/maxmanayan/task-tracker#readme"
+  "homepage": "https://github.com/maxmanayan/task-tracker#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
