@@ -15,6 +15,9 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 // routes
+app.get("/", (req, res, next) => {
+  res.status(200).send("Task Tracker");
+});
 
 // error handlers
 
