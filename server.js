@@ -11,6 +11,8 @@ const PORT = 3001;
 // mongoose middleware
 
 // APIs and middleware
+app.use(morgan("dev"));
+app.use(express.json());
 
 // routes
 
