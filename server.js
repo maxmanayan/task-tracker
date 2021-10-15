@@ -41,3 +41,6 @@ app.use((err, req, res, next) => {
 });
 
 // exports
+module.exports = app.listen(PORT, () => {
+  console.log(`Task Tracker listening on http://localhost:${PORT}`);
+});
