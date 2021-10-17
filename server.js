@@ -10,6 +10,10 @@ const app = express();
 const PORT = 3001;
 
 // mongoose middleware
+mongoose.connect(process.env.LOCAL_URL);
+const db = mongoose.connection;
+db.on("error", (error) => console.log(error));
+db.once("open", () => console.log("MongoDB connected..."));
 
 // APIs and middleware
 app.use(morgan("dev"));
