@@ -3,7 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
-const { restart } = require("nodemon");
+const tasksRouter = require("./routes/tasks");
 
 // constants
 const app = express();
@@ -18,6 +18,7 @@ db.once("open", () => console.log("MongoDB connected..."));
 // APIs and middleware
 app.use(morgan("dev"));
 app.use(express.json());
+app.use("/tasks", tasksRouter);
 
 // routes
 app.get("/", (req, res, next) => {
