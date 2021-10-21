@@ -1,5 +1,6 @@
 // imports
 const express = require("express");
+const router = express.Router();
 
 // routes
 // GET ALL
@@ -10,3 +11,4 @@ const express = require("express");
 // DELETE
 
 // exports
+module.exports = router;
