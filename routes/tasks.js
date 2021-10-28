@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
+const { findTask } = require("./helpers/findTask");
 
 // routes
 // GET ALL
@@ -15,6 +16,10 @@ router.get("/", async (req, res, next) => {
 });
 
 // GET ONE
+router.get("/task/:id", findTask, (req, res, next) => {
+  res.status(200).send(res.task);
+});
+
 // GET QUERY
 // POST
 // PUT
