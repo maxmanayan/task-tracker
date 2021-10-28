@@ -20,5 +20,14 @@ describe("All HTTP endpoints for tasks router", () => {
           done();
         });
     });
+    it("If endpoint is misspelled, should return 404 error", (done) => {
+      chai
+        .request(server)
+        .get("/task")
+        .end((err, res) => {
+          res.should.have.status(404);
+          done();
+        });
+    });
   });
 });
