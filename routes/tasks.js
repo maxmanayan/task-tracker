@@ -5,6 +5,15 @@ const Task = require("../models/Task");
 
 // routes
 // GET ALL
+router.get("/", async (req, res, next) => {
+  try {
+    const tasks = await Task.find();
+    res.status(200).send(tasks);
+  } catch (error) {
+    next(new Error(error.message));
+  }
+});
+
 // GET ONE
 // GET QUERY
 // POST
