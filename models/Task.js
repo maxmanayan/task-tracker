@@ -4,17 +4,14 @@ const mongoose = require("mongoose");
 // schema
 const taskSchema = new mongoose.Schema(
   {
-    title: {
+    text: {
       type: String,
     },
-    description: {
+    day: {
       type: String,
     },
-    completed: {
+    reminder: {
       type: Boolean,
-    },
-    date: {
-      type: Date,
     },
   },
   {
