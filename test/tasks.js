@@ -33,7 +33,7 @@ describe("All HTTP endpoints for tasks router", () => {
 
   describe("GET ONE endpoint", () => {
     it("Should return a single task object", (done) => {
-      const paramId = "1123214";
+      const paramId = "617aef1af8ee122e7fa94713";
       chai
         .request(server)
         .get(`/tasks/task/${paramId}`)
@@ -48,7 +48,7 @@ describe("All HTTP endpoints for tasks router", () => {
         });
     });
     it("If endpoint is misspelled, should return 404 error", (done) => {
-      const paramId = "2";
+      const paramId = "617aef1af8ee122e7fa94713";
       chai
         .request(server)
         .get(`/tasks/taskd/${paramId}`)
