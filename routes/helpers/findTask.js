@@ -1,7 +1,7 @@
 const Task = require("../../models/Task");
 const { err400 } = require("./customErrors");
 
-export const findTask = async (req, res, next) => {
+const findTask = async (req, res, next) => {
   let task;
   try {
     task = await Task.findById(req.params.id);
@@ -14,3 +14,5 @@ export const findTask = async (req, res, next) => {
   res.task = task;
   next();
 };
+
+module.exports = { findTask };
