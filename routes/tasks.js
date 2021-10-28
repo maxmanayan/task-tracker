@@ -2,7 +2,8 @@
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
-const { findTask } = require("./helpers/findTask");
+const { findTask, validateNewTask } = require("./helpers/taskHelpers");
+const { err400 } = require("./helpers/customErrors");
 
 // routes
 // GET ALL
@@ -23,15 +24,20 @@ router.get("/task/:id", findTask, (req, res, next) => {
 // GET QUERY
 // POST
 router.post("/task", async (req, res, next) => {
-  console.log(req.body);
-  const task = new Task({
-    text: req.body.text,
-    day: req.body.day,
-    reminder: req.body.reminder,
-  });
   try {
-    const newTask = await task.save();
-    res.status(201).send(newTask);
+    if (validateNewTask(req.body)) {
+      console.log("task valid");
+      const task = new Task({
+        text: req.body.text,
+        day: req.body.day,
+        reminder: req.body.reminder,
+      });
+      const newTask = await task.save();
+      res.status(201).send(newTask);
+    } else {
+      console.log("task invalid");
+      next(err400);
+    }
   } catch (error) {
     next(new Error(error.message));
   }
