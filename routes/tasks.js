@@ -22,6 +22,21 @@ router.get("/task/:id", findTask, (req, res, next) => {
 
 // GET QUERY
 // POST
+router.post("/task", async (req, res, next) => {
+  console.log(req.body);
+  const task = new Task({
+    text: req.body.text,
+    day: req.body.day,
+    reminder: req.body.reminder,
+  });
+  try {
+    const newTask = await task.save();
+    res.status(201).send(newTask);
+  } catch (error) {
+    next(new Error(error.message));
+  }
+});
+
 // PUT
 // DELETE
 

@@ -4,15 +4,9 @@ const mongoose = require("mongoose");
 // schema
 const taskSchema = new mongoose.Schema(
   {
-    text: {
-      type: String,
-    },
-    day: {
-      type: String,
-    },
-    reminder: {
-      type: Boolean,
-    },
+    text: String,
+    day: String,
+    reminder: Boolean,
   },
   {
     collection: "tasks",
