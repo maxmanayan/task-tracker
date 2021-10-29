@@ -79,6 +79,43 @@ describe("All HTTP endpoints for tasks router", () => {
     });
   });
 
+  describe("GET QUERY endpoint", () => {
+    it("Should return an array of task objects that pass query filter", (done) => {
+      const text = "Write Tests";
+      const reminder = false;
+      chai
+        .request(server)
+        .get(`/tasks/task?text=${text}&reminder=${reminder}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a("array");
+          done();
+        });
+    });
+    it("If queries are not found, should return a 404 error", (done) => {
+      const text = "awefawef";
+      const reminder = "false";
+      chai
+        .request(server)
+        .get(`/tasks/task?text=${text}&reminder=${reminder}`)
+        .end((err, res) => {
+          res.should.have.status(404);
+          done();
+        });
+    });
+    it("If queries are undefined, should return a 500 error", (done) => {
+      const text = undefined;
+      const reminder = undefined;
+      chai
+        .request(server)
+        .get(`/tasks/task?text=${text}&reminder=${reminder}`)
+        .end((err, res) => {
+          res.should.have.status(500);
+          done();
+        });
+    });
+  });
+
   describe("POST endpoint", () => {
     it("Should return the task object that was posted to the new array", (done) => {
       const sampleTask = {
@@ -136,6 +173,112 @@ describe("All HTTP endpoints for tasks router", () => {
         .request(server)
         .post("/tasks/taskd")
         .send(sampleTask)
+        .end((err, res) => {
+          res.should.have.status(404);
+          done();
+        });
+    });
+  });
+
+  describe("PUT endpoint", () => {
+    it("Should return the updated college object", (done) => {
+      const paramId = "617aef1af8ee122e7fa94713";
+      const updatedTask = {
+        text: "This has been updated",
+        day: "Oct 29th at 12:00 pm",
+        reminder: true,
+      };
+      chai
+        .request(server)
+        .put(`/tasks/task/${paramId}`)
+        .send(updatedTask)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a("object");
+          res.body.should.have.property("_id").eq(paramId);
+          res.body.should.have.property("text").eq(updatedTask.text);
+          res.body.should.have.property("day").eq(updatedTask.day);
+          res.body.should.have.property("reminder").eq(updatedTask.reminder);
+          done();
+        });
+    });
+    it("If request obj has invalid properties, should return 400 error", (done) => {
+      const paramId = "617aef1af8ee122e7fa94713";
+      const updatedTask = {
+        text: 54,
+        day: false,
+        reminder: "yes",
+      };
+      chai
+        .request(server)
+        .put(`/tasks/task/${paramId}`)
+        .send(updatedTask)
+        .end((err, res) => {
+          res.should.have.status(400);
+          done();
+        });
+    });
+    it("If paramId is undefined, should return 500 error", (done) => {
+      const paramId = undefined;
+      const updatedTask = {
+        text: "This has been updated",
+        day: "Oct 29th at 12:00 pm",
+        reminder: true,
+      };
+      chai
+        .request(server)
+        .put(`/tasks/task/${paramId}`)
+        .send(updatedTask)
+        .end((err, res) => {
+          res.should.have.status(500);
+          done();
+        });
+    });
+    it("If endpoint is misspelled, should return 404 error", (done) => {
+      const paramId = "617aef1af8ee122e7fa94713";
+      const updatedTask = {
+        text: "This has been updated",
+        day: "Oct 29th at 12:00 pm",
+        reminder: true,
+      };
+      chai
+        .request(server)
+        .put(`/tasks/taskd/${paramId}`)
+        .send(updatedTask)
+        .end((err, res) => {
+          res.should.have.status(404);
+          done();
+        });
+    });
+  });
+
+  describe("DELETE endpoint", () => {
+    it("Should return a success object", (done) => {
+      const paramId = "617c44155ed81f8dd6d834cf";
+      chai
+        .request(server)
+        .delete(`/tasks/task/${paramId}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a("object");
+          done();
+        });
+    });
+    it("If paramId is undefined, should return a 500 error", (done) => {
+      const paramId = undefined;
+      chai
+        .request(server)
+        .delete(`/tasks/task/${paramId}`)
+        .end((err, res) => {
+          res.should.have.status(500);
+          done();
+        });
+    });
+    it("If endpoint is misspelled, should return a 404 error", (done) => {
+      const paramId = "617c44155ed81f8dd6d834cf";
+      chai
+        .request(server)
+        .delete(`/tasks/taskd/${paramId}`)
         .end((err, res) => {
           res.should.have.status(404);
           done();

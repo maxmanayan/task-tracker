@@ -2,7 +2,11 @@
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
-const { findTask, validateNewTask } = require("./helpers/taskHelpers");
+const {
+  checkProperties,
+  findTask,
+  validateNewTask,
+} = require("./helpers/taskHelpers");
 const { err400 } = require("./helpers/customErrors");
 
 // routes
@@ -22,6 +26,21 @@ router.get("/task/:id", findTask, (req, res, next) => {
 });
 
 // GET QUERY
+router.get("/task", async (req, res, next) => {
+  try {
+    console.log(req.query);
+    const queriedTasks = await Task.find(req.query);
+    console.log("queriedTasks", queriedTasks);
+    if (queriedTasks.length < 1) {
+      next();
+    } else {
+      res.status(200).send(queriedTasks);
+    }
+  } catch (error) {
+    next(new Error(error.message));
+  }
+});
+
 // POST
 router.post("/task", async (req, res, next) => {
   try {
@@ -44,7 +63,31 @@ router.post("/task", async (req, res, next) => {
 });
 
 // PUT
+router.put("/task/:id", findTask, async (req, res, next) => {
+  try {
+    if (checkProperties(req.body)) {
+      res.task.text = req.body.text;
+      res.task.day = req.body.day;
+      res.task.reminder = req.body.reminder;
+      const updatedTask = await res.task.save();
+      res.status(200).send(updatedTask);
+    } else {
+      next(err400);
+    }
+  } catch (error) {
+    next(new Error(error.message));
+  }
+});
+
 // DELETE
+router.delete("/task/:id", findTask, async (req, res, next) => {
+  try {
+    await res.task.remove();
+    res.status(200).send({ message: "Task successfully deleted" });
+  } catch (error) {
+    next(new Error(error.message));
+  }
+});
 
 // exports
 module.exports = router;

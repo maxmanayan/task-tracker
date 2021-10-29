@@ -16,18 +16,27 @@ const findTask = async (req, res, next) => {
 };
 
 const validateNewTask = (reqObj) => {
-  console.log("in validateNewTask", reqObj);
   if (
     typeof reqObj.text !== "string" ||
     typeof reqObj.day !== "string" ||
     typeof reqObj.reminder !== "boolean"
   ) {
-    console.log("property wrong");
     return false;
   } else {
-    console.log("property right");
     return true;
   }
 };
 
-module.exports = { findTask, validateNewTask };
+const checkProperties = (reqObj) => {
+  if (
+    typeof reqObj.text === "string" &&
+    typeof reqObj.day === "string" &&
+    typeof reqObj.reminder === "boolean"
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+module.exports = { checkProperties, findTask, validateNewTask };
