@@ -22,6 +22,21 @@ router.get("/task/:id", findTask, (req, res, next) => {
 });
 
 // GET QUERY
+router.get("/task", async (req, res, next) => {
+  try {
+    console.log(req.query);
+    const queriedTasks = await Task.find(req.query);
+    console.log("queriedTasks", queriedTasks);
+    if (queriedTasks.length < 1) {
+      next();
+    } else {
+      res.status(200).send(queriedTasks);
+    }
+  } catch (error) {
+    next(new Error(error.message));
+  }
+});
+
 // POST
 router.post("/task", async (req, res, next) => {
   try {

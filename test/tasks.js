@@ -88,18 +88,7 @@ describe("All HTTP endpoints for tasks router", () => {
         .get(`/tasks/task?text=${text}&reminder=${reminder}`)
         .end((err, res) => {
           res.should.have.status(200);
-          res.should.be.a("array");
-          done();
-        });
-    });
-    it("If query properties are invalid, should return a 404 error", (done) => {
-      const text = "Write Tests";
-      const reminder = false;
-      chai
-        .request(server)
-        .get(`/tasks/task?bad=${text}&invalid=${reminder}`)
-        .end((err, res) => {
-          res.should.have.status(404);
+          res.body.should.be.a("array");
           done();
         });
     });
@@ -114,14 +103,14 @@ describe("All HTTP endpoints for tasks router", () => {
           done();
         });
     });
-    it("If queries are undefined, should return a 404 error", (done) => {
+    it("If queries are undefined, should return a 500 error", (done) => {
       const text = undefined;
       const reminder = undefined;
       chai
         .request(server)
         .get(`/tasks/task?text=${text}&reminder=${reminder}`)
         .end((err, res) => {
-          res.should.have.status(404);
+          res.should.have.status(500);
           done();
         });
     });
