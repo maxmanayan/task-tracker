@@ -27,4 +27,16 @@ const validateNewTask = (reqObj) => {
   }
 };
 
-module.exports = { findTask, validateNewTask };
+const checkProperties = (reqObj) => {
+  if (
+    typeof reqObj.text === "string" &&
+    typeof reqObj.day === "string" &&
+    typeof reqObj.reminder === "boolean"
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+module.exports = { checkProperties, findTask, validateNewTask };

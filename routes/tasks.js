@@ -2,7 +2,11 @@
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
-const { findTask, validateNewTask } = require("./helpers/taskHelpers");
+const {
+  checkProperties,
+  findTask,
+  validateNewTask,
+} = require("./helpers/taskHelpers");
 const { err400 } = require("./helpers/customErrors");
 
 // routes
@@ -59,6 +63,22 @@ router.post("/task", async (req, res, next) => {
 });
 
 // PUT
+router.put("/task/:id", findTask, async (req, res, next) => {
+  try {
+    if (checkProperties(req.body)) {
+      res.task.text = req.body.text;
+      res.task.day = req.body.day;
+      res.task.reminder = req.body.reminder;
+      const updatedTask = await res.task.save();
+      res.status(200).send(updatedTask);
+    } else {
+      next(err400);
+    }
+  } catch (error) {
+    next(new Error(error.message));
+  }
+});
+
 // DELETE
 
 // exports

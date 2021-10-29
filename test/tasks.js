@@ -198,7 +198,7 @@ describe("All HTTP endpoints for tasks router", () => {
           res.body.should.have.property("_id").eq(paramId);
           res.body.should.have.property("text").eq(updatedTask.text);
           res.body.should.have.property("day").eq(updatedTask.day);
-          res.body.should.have.property("reminder").eq(updatedTask.text);
+          res.body.should.have.property("reminder").eq(updatedTask.reminder);
           done();
         });
     });
@@ -218,7 +218,7 @@ describe("All HTTP endpoints for tasks router", () => {
           done();
         });
     });
-    it("If paramId is undefined, should return 404 error", (done) => {
+    it("If paramId is undefined, should return 500 error", (done) => {
       const paramId = undefined;
       const updatedTask = {
         text: "This has been updated",
@@ -230,7 +230,7 @@ describe("All HTTP endpoints for tasks router", () => {
         .put(`/tasks/task/${paramId}`)
         .send(updatedTask)
         .end((err, res) => {
-          res.should.have.status(404);
+          res.should.have.status(500);
           done();
         });
     });
@@ -243,7 +243,7 @@ describe("All HTTP endpoints for tasks router", () => {
       };
       chai
         .request(server)
-        .put(`/tasks/task/${paramId}`)
+        .put(`/tasks/taskd/${paramId}`)
         .send(updatedTask)
         .end((err, res) => {
           res.should.have.status(404);
