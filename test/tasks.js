@@ -179,4 +179,76 @@ describe("All HTTP endpoints for tasks router", () => {
         });
     });
   });
+
+  describe("PUT endpoint", () => {
+    it("Should return the updated college object", (done) => {
+      const paramId = "617aef1af8ee122e7fa94713";
+      const updatedTask = {
+        text: "This has been updated",
+        day: "Oct 29th at 12:00 pm",
+        reminder: true,
+      };
+      chai
+        .request(server)
+        .put(`/tasks/task/${paramId}`)
+        .send(updatedTask)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a("object");
+          res.body.should.have.property("_id").eq(paramId);
+          res.body.should.have.property("text").eq(updatedTask.text);
+          res.body.should.have.property("day").eq(updatedTask.day);
+          res.body.should.have.property("reminder").eq(updatedTask.text);
+          done();
+        });
+    });
+    it("If request obj has invalid properties, should return 400 error", (done) => {
+      const paramId = "617aef1af8ee122e7fa94713";
+      const updatedTask = {
+        text: 54,
+        day: false,
+        reminder: "yes",
+      };
+      chai
+        .request(server)
+        .put(`/tasks/task/${paramId}`)
+        .send(updatedTask)
+        .end((err, res) => {
+          res.should.have.status(400);
+          done();
+        });
+    });
+    it("If paramId is undefined, should return 404 error", (done) => {
+      const paramId = undefined;
+      const updatedTask = {
+        text: "This has been updated",
+        day: "Oct 29th at 12:00 pm",
+        reminder: true,
+      };
+      chai
+        .request(server)
+        .put(`/tasks/task/${paramId}`)
+        .send(updatedTask)
+        .end((err, res) => {
+          res.should.have.status(404);
+          done();
+        });
+    });
+    it("If endpoint is misspelled, should return 404 error", (done) => {
+      const paramId = "617aef1af8ee122e7fa94713";
+      const updatedTask = {
+        text: "This has been updated",
+        day: "Oct 29th at 12:00 pm",
+        reminder: true,
+      };
+      chai
+        .request(server)
+        .put(`/tasks/task/${paramId}`)
+        .send(updatedTask)
+        .end((err, res) => {
+          res.should.have.status(404);
+          done();
+        });
+    });
+  });
 });
