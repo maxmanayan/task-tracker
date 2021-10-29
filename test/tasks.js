@@ -79,6 +79,54 @@ describe("All HTTP endpoints for tasks router", () => {
     });
   });
 
+  describe("GET QUERY endpoint", () => {
+    it("Should return an array of task objects that pass query filter", (done) => {
+      const text = "Write Tests";
+      const reminder = false;
+      chai
+        .request(server)
+        .get(`/tasks/task?text=${text}&reminder=${reminder}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.should.be.a("array");
+          done();
+        });
+    });
+    it("If query properties are invalid, should return a 404 error", (done) => {
+      const text = "Write Tests";
+      const reminder = false;
+      chai
+        .request(server)
+        .get(`/tasks/task?bad=${text}&invalid=${reminder}`)
+        .end((err, res) => {
+          res.should.have.status(404);
+          done();
+        });
+    });
+    it("If queries are not found, should return a 404 error", (done) => {
+      const text = "awefawef";
+      const reminder = "false";
+      chai
+        .request(server)
+        .get(`/tasks/task?text=${text}&reminder=${reminder}`)
+        .end((err, res) => {
+          res.should.have.status(404);
+          done();
+        });
+    });
+    it("If queries are undefined, should return a 404 error", (done) => {
+      const text = undefined;
+      const reminder = undefined;
+      chai
+        .request(server)
+        .get(`/tasks/task?text=${text}&reminder=${reminder}`)
+        .end((err, res) => {
+          res.should.have.status(404);
+          done();
+        });
+    });
+  });
+
   describe("POST endpoint", () => {
     it("Should return the task object that was posted to the new array", (done) => {
       const sampleTask = {
