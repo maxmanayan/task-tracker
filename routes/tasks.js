@@ -80,6 +80,14 @@ router.put("/task/:id", findTask, async (req, res, next) => {
 });
 
 // DELETE
+router.delete("/task/:id", findTask, async (req, res, next) => {
+  try {
+    await res.task.remove();
+    res.status(200).send({ message: "Task successfully deleted" });
+  } catch (error) {
+    next(new Error(error.message));
+  }
+});
 
 // exports
 module.exports = router;

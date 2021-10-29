@@ -264,13 +264,13 @@ describe("All HTTP endpoints for tasks router", () => {
           done();
         });
     });
-    it("If paramId is undefined, should return a 404 error", (done) => {
+    it("If paramId is undefined, should return a 500 error", (done) => {
       const paramId = undefined;
       chai
         .request(server)
         .delete(`/tasks/task/${paramId}`)
         .end((err, res) => {
-          res.should.have.status(404);
+          res.should.have.status(500);
           done();
         });
     });
