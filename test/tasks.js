@@ -251,4 +251,38 @@ describe("All HTTP endpoints for tasks router", () => {
         });
     });
   });
+
+  describe("DELETE endpoint", () => {
+    it("Should return a success object", (done) => {
+      const paramId = "617c44155ed81f8dd6d834cf";
+      chai
+        .request(server)
+        .delete(`/tasks/task/${paramId}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a("object");
+          done();
+        });
+    });
+    it("If paramId is undefined, should return a 404 error", (done) => {
+      const paramId = undefined;
+      chai
+        .request(server)
+        .delete(`/tasks/task/${paramId}`)
+        .end((err, res) => {
+          res.should.have.status(404);
+          done();
+        });
+    });
+    it("If endpoint is misspelled, should return a 404 error", (done) => {
+      const paramId = "617c44155ed81f8dd6d834cf";
+      chai
+        .request(server)
+        .delete(`/tasks/taskd/${paramId}`)
+        .end((err, res) => {
+          res.should.have.status(404);
+          done();
+        });
+    });
+  });
 });
